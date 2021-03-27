@@ -1,2 +1,5 @@
 venv
 .idea
+images
+notes.txt
+__pycache__

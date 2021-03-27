@@ -1,0 +1,5 @@
+Chromosom - sekwencja środków k klastrów
+Dla n wymiarowej przestrzeni każdy środek klastra jest zmapowany na n genów w chromosomie
+Każdy gen to int reprezenujący wartość intensywności kanałów RGB
+
+funkcja jakości suma minimalnych odległości dla wszystkich klastrów w chromosomie
