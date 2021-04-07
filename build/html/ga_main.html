@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>ga_main module &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utils module" href="utils.html" />
+    <link rel="prev" title="enums module" href="enums.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="enums.html" title="enums module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">IO_AdaptiveImageSegmentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ga_main module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-ga_main">
+<span id="ga-main-module"></span><h1>ga_main module<a class="headerlink" href="#module-ga_main" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="ga_main.assign_labels_based_on_chromosome">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">assign_labels_based_on_chromosome</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chromosome</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><a class="headerlink" href="#ga_main.assign_labels_based_on_chromosome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign label to each pixel in the picture based on cluster centres and euclidean distance
+:param chromosome: one possible solution
+:param image_size: dimensions of an image
+:return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.calculate_fitness_function">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">calculate_fitness_function</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chromosome</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#ga_main.calculate_fitness_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate quality.
+Sum of min distances in each cluster in each chromosome
+:param chromosome: one particular solution
+:param image_size: image dimension
+:param image: image to be segmented
+:return: value of fitness function</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.check_end_criterion">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">check_end_criterion</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ga_main.check_end_criterion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if algorithm can be ended.
+:return:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.ga_segmentation">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">ga_segmentation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_iterations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coding_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.CodingMethod" title="enums.CodingMethod"><span class="pre">enums.CodingMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.SelectionMethod" title="enums.SelectionMethod"><span class="pre">enums.SelectionMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.MutationType" title="enums.MutationType"><span class="pre">enums.MutationType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossover_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.array</span><a class="headerlink" href="#ga_main.ga_segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main algorithm function
+:param image: path to image to be segmented
+:param nb_of_iterations: max number of algorithm iterations
+:param nb_of_clusters:
+:param coding_type: coding method to be used
+:param selection_method: selection method to be used
+:param mutation_type: mutation type to be used
+:param crossover_rate:
+:return: None</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.generate_initial_population">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">generate_initial_population</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.generate_initial_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates population at the start
+:param population_size: number of chromosomes
+:param number_of_clusters: number of areas that picture must be divided into
+:return: list of chromosomes in population</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.generate_new_population">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">generate_new_population</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reproductive_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.CodingMethod" title="enums.CodingMethod"><span class="pre">enums.CodingMethod</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.generate_new_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate new population, based on chromosomes selected from current population
+:param reproductive_group: group with best, according to fitness function, solutions
+:param method: the way of coding
+:return: new population</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.get_final_result">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">get_final_result</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.array</span><a class="headerlink" href="#ga_main.get_final_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get best image.
+:return: - segmented image.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.perform_mutation">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">perform_mutation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.MutationType" title="enums.MutationType"><span class="pre">enums.MutationType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.perform_mutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mutate some of the chromosomes.
+:param new_population: generated new solutions
+:param method: type of the mutation
+:return: mutated solution</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ga_main.select_reproductive_group">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">select_reproductive_group</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.SelectionMethod" title="enums.SelectionMethod"><span class="pre">enums.SelectionMethod</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.select_reproductive_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select reproductive group according to qualities and selected method
+:param current_population: current group of solutions
+:param qualities: values of fitness function
+:param method: Method of selection
+:return: best possible solutions in population</p>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="enums.html"
+                        title="previous chapter">enums module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utils.html"
+                        title="next chapter">utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ga_main.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="enums.html" title="enums module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >IO_AdaptiveImageSegmentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ga_main module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Aleksandra Dabrowska, Jerzy Dabrowski, Kinga Talaga.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

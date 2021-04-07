@@ -4,6 +4,7 @@ from enum import IntEnum
 class SelectionMethod(IntEnum):
     """
     Class with selection types for GA.
+
     - ROULETTE - lets imagine roulette, each element in population gets area proportionally to quality function,
                  then run roulette and take choosen element
     - RANK - sort elements according to quality function and select x best
@@ -17,6 +18,7 @@ class SelectionMethod(IntEnum):
 class MutationType(IntEnum):
     """
     Class with mutation types for GA.
+
     - INVERSION -
     - SUBSTITUTION -
     - REMOVAL -
@@ -29,6 +31,7 @@ class MutationType(IntEnum):
 class CodingMethod(IntEnum):
     """
     Class with coding methods for GA.
+
     - CLASSIC -
     - PERMUTATIONAL -
     - WOODY -

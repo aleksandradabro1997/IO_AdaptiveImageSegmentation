@@ -17,7 +17,7 @@ parser.add_argument('--nb-of-clusters', default=10, type=int,
 parser.add_argument('--coding-method', default=0, type=int,
                     help='One of 3 coding types (classic, permutational, woody)')
 parser.add_argument('--selection-method', default=0, type=int,
-                    help='Type of selection method (rulette, rank, tournament)')
+                    help='Type of selection method (roulette, rank, tournament)')
 parser.add_argument('--mutation-type', default=0, type=int,
                     help='Mutation type')
 parser.add_argument('--crossover-rate', default=0.1, type=float,
@@ -25,7 +25,7 @@ parser.add_argument('--crossover-rate', default=0.1, type=float,
 parser.add_argument('--image-path', default='images/Lenna.png', type=str,
                     help='Path to image to be segmented')
 
-args = parser.parse_args()
+#args = parser.parse_args()
 
 # Set random seed
 np.random.seed(seed=1)
@@ -41,9 +41,9 @@ def generate_initial_population(population_size: int, number_of_clusters: int,
                                 image_size: Tuple, image: np.array) -> List:
     """
     Generates population at the start
-    :param population_size:
-    :param number_of_clusters:
-    :return:
+    :param population_size: number of chromosomes
+    :param number_of_clusters: number of areas that picture must be divided into
+    :return: list of chromosomes in population
     """
     population = []
     for i in range(population_size + 1):
@@ -61,8 +61,8 @@ def generate_initial_population(population_size: int, number_of_clusters: int,
 def assign_labels_based_on_chromosome(chromosome: List, image_size: Tuple, image: np.array) -> Tuple:
     """
     Assign label to each pixel in the picture based on cluster centres and euclidean distance
-    :param chromosome:
-    :param image_size:
+    :param chromosome: one possible solution
+    :param image_size: dimensions of an image
     :return:
     """
     labels = np.ones(image_size) * (-1)
@@ -88,7 +88,10 @@ def calculate_fitness_function(chromosome: List, image_size: Tuple, image: np.ar
     """
     Calculate quality.
     Sum of min distances in each cluster in each chromosome
-    :return:
+    :param chromosome: one particular solution
+    :param image_size: image dimension
+    :param image: image to be segmented
+    :return: value of fitness function
     """
     quality = 0
     labels, centre_distances = assign_labels_based_on_chromosome(chromosome, image_size, image)
@@ -103,32 +106,53 @@ def calculate_fitness_function(chromosome: List, image_size: Tuple, image: np.ar
 def generate_new_population(reproductive_group: List, method: CodingMethod) -> List:
     """
     Generate new population, based on chromosomes selected from current population
-    :param reproductive_group:
-    :param method:
-    :return:
+    :param reproductive_group: group with best, according to fitness function, solutions
+    :param method: the way of coding
+    :return: new population
     """
-    raise NotImplementedError
+    if method == CodingMethod.CLASSIC:
+        pass
+    elif method == CodingMethod.PERMUTATIONAL:
+        pass
+    elif method == CodingMethod.WOODY:
+        pass
+    else:
+        raise ValueError(f'Invalid coding method passed!')
 
 
 def select_reproductive_group(current_population: List, qualities: List, method: SelectionMethod) -> List:
     """
     Select reproductive group according to qualities and selected method
-    :param current_population:
-    :param qualities:
+    :param current_population: current group of solutions
+    :param qualities: values of fitness function
     :param method: Method of selection
-    :return:
+    :return: best possible solutions in population
     """
-    raise NotImplementedError
+    if method == SelectionMethod.RANK:
+        pass
+    elif method == SelectionMethod.ROULETTE:
+        pass
+    elif method == SelectionMethod.TOURNAMENT:
+        pass
+    else:
+        raise ValueError(f'Invalid selection method passed!')
 
 
 def perform_mutation(new_population: List, method: MutationType) -> List:
     """
     Mutate some of the chromosomes.
-    :param new_population:
-    :param method:
-    :return:
+    :param new_population: generated new solutions
+    :param method: type of the mutation
+    :return: mutated solution
     """
-    raise NotImplementedError
+    if method == MutationType.INVERSION:
+        pass
+    elif method == MutationType.REMOVAL:
+        pass
+    elif method == MutationType.SUBSTITUTION:
+        pass
+    else:
+        raise ValueError(f'Invalid mutation type passed!')
 
 
 def check_end_criterion() -> bool:
@@ -142,7 +166,7 @@ def check_end_criterion() -> bool:
 def get_final_result() -> np.array:
     """
     Get best image.
-    :return:
+    :return: - segmented image.
     """
     raise NotImplementedError
 
