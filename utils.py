@@ -19,10 +19,10 @@ def check_if_file_exists(path: str) -> bool:
         return False
 
 
-def visualize_based_on_label(labels: np.array, orginal: np.array) -> None:
+def visualize_based_on_label(labels: np.array, original: np.array) -> None:
     """Plot segmented image
 
-    :param orginal: Orginal image
+    :param original: Original image
     :param labels: Segmented image
     """
     plt.figure()

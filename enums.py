@@ -28,6 +28,7 @@ class MutationType(IntEnum):
     INVERSION = 0
     SUBSTITUTION = 1
     REMOVAL = 2
+    PUBLICATION = 3
 
 
 class CodingMethod(IntEnum):

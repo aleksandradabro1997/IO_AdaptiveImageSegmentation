@@ -10,6 +10,7 @@ from enums import SelectionMethod, MutationType, CodingMethod
 from utils import check_if_file_exists, visualize_based_on_label
 from selection import select_by_rank_method, select_by_roulette_method, select_by_tournament_method
 from coding import generate_new_population_classic, generate_new_population_permutational, generate_new_population_woody
+from mutation import perform_mutation_inversion, perform_mutation_removal, perform_mutation_substitution
 
 parser = argparse.ArgumentParser(description='Adaptive Image Segmentation Algorithm')
 parser.add_argument('--nb-of-iterations', default=4, type=int,
@@ -18,9 +19,9 @@ parser.add_argument('--nb-of-clusters', default=10, type=int,
                     help='Number of clusters for the image')
 parser.add_argument('--coding-method', default=CodingMethod.PUBLICATION, type=int,
                     help='One of 3 coding types (classic, permutational, woody)')
-parser.add_argument('--selection-method', default=0, type=int,
+parser.add_argument('--selection-method', default=SelectionMethod.PUBLICATION, type=int,
                     help='Type of selection method (roulette, rank, tournament)')
-parser.add_argument('--mutation-type', default=0, type=int,
+parser.add_argument('--mutation-type', default=MutationType.PUBLICATION, type=int,
                     help='Mutation type')
 parser.add_argument('--crossover-rate', default=0.1, type=float,
                     help='Value of crossover rate')
@@ -101,6 +102,10 @@ def calculate_fitness_function(chromosome: defaultdict, image_size: Tuple, image
     for k in range(len(chromosome)):
         min_distance = np.amin(centre_distances[labels == k])
         quality += min_distance
+        # Replace chromosome centre with mean cluster values
+        indices = np.where(labels == k)
+        new_center = (int(sum(indices[0])/len(indices[0])), int(sum(indices[1])/len(indices[1])))
+        chromosome[k] = image[new_center[0], new_center[1], :]
     return quality
 
 
@@ -109,11 +114,11 @@ def generate_new_population(reproductive_group: List, qualities: List, method: C
     """Generate new population, based on chromosomes selected from current population,
     according to publication best chromosome survives others are random
 
-    :param population_size:
-    :param image:
-    :param number_of_clusters:
-    :param image_size:
-    :param qualities:
+    :param population_size: number of solutions in population
+    :param image: input image
+    :param number_of_clusters: number of parts to divide picture
+    :param image_size: size of the input  image
+    :param qualities: values of the fitness function for each solution
     :param reproductive_group: group with best, according to fitness function, solutions
     :param method: the way of coding
     :return: new population
@@ -130,7 +135,7 @@ def generate_new_population(reproductive_group: List, qualities: List, method: C
                                                      image=image,
                                                      population_size=population_size,
                                                      number_of_clusters=number_of_clusters)
-        new_population[0] = select_best_chromosome(reproductive_group, qualities)  # according to publication best chromosome is kept
+        new_population[0] = select_best_chromosome(new_population, qualities)  # according to publication best chromosome is kept
     else:
         raise ValueError(f'Invalid coding method passed!')
     return new_population
@@ -168,11 +173,13 @@ def perform_mutation(new_population: List, method: MutationType) -> List:
     :return: mutated solution
     """
     if method == MutationType.INVERSION:
-        pass
+        new_population = perform_mutation_inversion(population=new_population)
     elif method == MutationType.REMOVAL:
-        pass
+        new_population = perform_mutation_removal(population=new_population)
     elif method == MutationType.SUBSTITUTION:
-        pass
+        new_population = perform_mutation_substitution(population=new_population)
+    elif method == MutationType.PUBLICATION:
+        new_population = new_population
     else:
         raise ValueError(f'Invalid mutation type passed!')
     return new_population
@@ -248,7 +255,7 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
     population = population_init
     for iteration in range(nb_of_iterations):
         # According to paper population is initialized randomly considering values <nb_of_clusters-3, nb_of_clusters+3>
-        population_size = np.random.randint(nb_of_clusters - 3, nb_of_clusters + 3)
+        # population_size = np.random.randint(nb_of_clusters - 3, nb_of_clusters + 3)
         # Calculate quality for each element in population
         qualities = []
         for chromosome in population:
