@@ -7,3 +7,6 @@ IO_AdaptiveImageSegmentation
    enums
    ga_main
    utils
+   coding
+   mutation
+   selection

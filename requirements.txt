@@ -2,3 +2,6 @@ numpy
 opencv-python
 scipy
 matplotlib
+tqdm
+scikit-image
+sphinx
