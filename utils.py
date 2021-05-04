@@ -19,22 +19,6 @@ def check_if_file_exists(path: str) -> bool:
         return False
 
 
-def visualize_based_on_label(labels: np.array, original: np.array) -> None:
-    """Plot segmented image
-
-    :param original: Original image
-    :param labels: Segmented image
-    """
-    plt.figure()
-    plt.subplot(121)
-    io.imshow(color.label2rgb(labels))
-    plt.title('Best result')
-    plt.subplot(122)
-    plt.imshow(original)
-    plt.title('Orginal image')
-    plt.show()
-
-
 def compare_with_ground_truth(segmented: np.array, gt: np.array) -> float:
     """Compare segmentation result with ground truth and return score.
 
@@ -46,6 +30,23 @@ def compare_with_ground_truth(segmented: np.array, gt: np.array) -> float:
     score = sum(segmented == gt)/(segmented.shape[0]*segmented.shape[1])
 
     return score
+
+
+def save_run_parameters(**kwargs) -> None:
+    """Save all run parameters to *.csv
+
+    :param kwargs: all parameters to save
+    :return: None
+    """
+
+    buf = '\n'
+    for key, value in kwargs.items():
+        buf += f'{key}: {value}; '
+
+    with open(r'results\results.csv', 'a') as f:
+        f.write(buf)
+
+# --------------------------------- Plots and prints ---------------------------------------
 
 
 def print_results(scores: Dict) -> None:
@@ -76,7 +77,7 @@ def plot_fitness_function_per_image(qualities: Dict, img_name: str) -> plt.figur
     return fig
 
 
-def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict) -> None:
+def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict) -> str:
     """Save plots to pdf.
 
     :param algo_output: segmented images
@@ -94,6 +95,7 @@ def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict) -> None:
     for fig in figs:
         pp.savefig(fig)
     pp.close()
+    return report_name
 
 
 def plot_gt_and_result(gt_image: np.array, algo_output: np.array) -> plt.figure:

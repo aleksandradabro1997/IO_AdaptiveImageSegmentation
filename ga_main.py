@@ -8,18 +8,18 @@ from scipy.spatial import distance
 from collections import defaultdict
 from typing import List, Tuple, Dict
 from enums import SelectionMethod, MutationType, CodingMethod
-from utils import check_if_file_exists, plot_to_pdf, print_results
+from utils import save_run_parameters, plot_to_pdf, print_results
 from selection import select_by_rank_method, select_by_roulette_method, select_by_tournament_method
 from coding import generate_new_population_classic, generate_new_population_permutational, generate_new_population_woody
 from mutation import perform_mutation_inversion, perform_mutation_removal, perform_mutation_substitution
 from process_dataset_voc import get_images_and_gt_from_dataset
 
 parser = argparse.ArgumentParser(description='Adaptive Image Segmentation Algorithm')
-parser.add_argument('--nb-of-iterations', default=10, type=int,
+parser.add_argument('--nb-of-iterations', default=50, type=int,
                     help='Number of algorithms iterations')
 parser.add_argument('--nb-of-clusters', default=4, type=int,
                     help='Number of clusters for the image')
-parser.add_argument('--coding-method', default=CodingMethod.CLASSIC, type=int,
+parser.add_argument('--coding-method', default=CodingMethod.PUBLICATION, type=int,
                     help='One of 3 coding types (classic, permutational, woody)')
 parser.add_argument('--selection-method', default=SelectionMethod.PUBLICATION, type=int,
                     help='Type of selection method (roulette, rank, tournament)')
@@ -40,7 +40,7 @@ np.random.seed(seed=1)
 # Configure logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 
 
@@ -104,7 +104,7 @@ def calculate_fitness_function(chromosome: defaultdict, image_size: Tuple, image
     """
     quality = 0
     labels, centre_distances = assign_labels_based_on_chromosome(chromosome, image_size, image)
-    # There where centre_distances == 0 set high value
+    # There where centre_distances == 0 set high value - to avoid choosing it
     centre_distances = np.where(centre_distances == 0, 1e100, centre_distances)
     for k in range(len(chromosome)):
         try:
@@ -181,7 +181,7 @@ def select_reproductive_group(current_population: List, qualities: List, method:
     return reproductive_group
 
 
-def perform_mutation(new_population: List, method: MutationType, mutation_probability: float = 0.01) -> List:
+def perform_mutation(new_population: List, method: MutationType, mutation_probability: float = 0.1) -> List:
     """Mutate some of the chromosomes.
 
     :param mutation_probability: probability of performing mutation
@@ -303,7 +303,7 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
                                                  image_size=image_size,
                                                  image=image_rgb,
                                                  current_population=population,
-                                                 coding_probability=0.75)
+                                                 coding_probability=args.crossover_rate)
         # Mutate
         new_population_mutated = perform_mutation(new_population=new_population,
                                                   method=mutation_type)
@@ -313,8 +313,8 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
         else:
             population = new_population_mutated
     segmented_image, best_chromosome = get_final_result(population=population,
-                                       image_size=image_size,
-                                       image=image_rgb)
+                                                        image_size=image_size,
+                                                        image=image_rgb)
     return segmented_image, best_chromosome, populations_and_qualities
 
 
@@ -327,20 +327,23 @@ def compare_results(ground_truth: Dict, algo_output: Dict):
     """
     scores = {}
     for img_name, gt in ground_truth.items():
-        algo_img = algo_output[img_name][0]
-        algo_chromosome = algo_output[img_name][1]
-        gt = dataset_gt[name][0]
-        best_lab, best_dist = assign_labels_based_on_chromosome(algo_chromosome, args.image_size, image)
-        score = 0
-        for i in range(dataset_gt[name][1]):
-            label_indexes = np.where(algo_img == i)
-            centre_index = np.argmin(best_dist[algo_img == 0]) #np.where(best_dist[algo_img == 0] == 0)[0]
-            label_gt = gt[label_indexes[0][centre_index], label_indexes[1][centre_index]]
-            tmp_gt = np.ones(args.image_size) * 100
-            tmp_gt[np.where(gt == label_gt)] = label_gt
-            score += np.sum(tmp_gt == algo_img)
+        try:
+            algo_img = algo_output[img_name][0]
+            algo_chromosome = algo_output[img_name][1]
+            gt = dataset_gt[name][0]
+            best_lab, best_dist = assign_labels_based_on_chromosome(algo_chromosome, args.image_size, image)
+            score = 0
+            for i in range(dataset_gt[name][1]):
+                label_indexes = np.where(algo_img == i)
+                centre_index = np.argmin(best_dist[algo_img == 0]) #np.where(best_dist[algo_img == 0] == 0)[0]
+                label_gt = gt[label_indexes[0][centre_index], label_indexes[1][centre_index]]
+                tmp_gt = np.ones(args.image_size) * 100
+                tmp_gt[np.where(gt == label_gt)] = label_gt
+                score += np.sum(tmp_gt == algo_img)
 
-        scores.update({img_name: score/(args.image_size[0] * args.image_size[1])})
+            scores.update({img_name: score/(args.image_size[0] * args.image_size[1])})
+        except:
+            continue
     return scores
 
 
@@ -362,13 +365,28 @@ if __name__ == '__main__':
         # Save populations and qualities for later
         qualities_and_populations.update({name: qualities})
         algo_output.update({name: (best_img, best_chromosome)})
+
     logging.info('Calculating accuracy score ... ')
     scores = compare_results(ground_truth=dataset_gt,
                              algo_output=algo_output)
     print_results(scores)
-    plot_to_pdf(gt=dataset_gt,
-                algo_output=algo_output,
-                qualities=qualities_and_populations)
+
+    logging.info('Saving to pdf ...')
+    pdf_name = plot_to_pdf(gt=dataset_gt,
+                           algo_output=algo_output,
+                           qualities=qualities_and_populations)
+
+    logging.info('Saving run parameters and results ...')
+    save_run_parameters(dataset=args.dataset,
+                        image_size=args.image_size,
+                        number_of_iterations=args.nb_of_iterations,
+                        coding_method=args.coding_method,
+                        selection_method=args.selection_method,
+                        mutation_type=args.mutation_type,
+                        crossover_rate=args.crossover_rate,
+                        scores=scores,
+                        pdf_file=pdf_name)
+
     pass
     #                                nb_of_iterations=args.nb_of_iterations,
     #                                nb_of_clusters=args.nb_of_clusters,
