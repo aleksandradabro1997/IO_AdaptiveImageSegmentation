@@ -55,10 +55,22 @@ def print_results(scores: Dict) -> None:
     :param scores: dictionary with results
     :return: None
     """
-    print(f'\nRUN RESULTS\n')
+    print(f'\n--------------------RESULTS--------------------\n')
     print(f' image_name    score')
     for img_name, score in scores.items():
         print(f'{img_name}:    {score}')
+
+
+def print_results_are(scores: Dict) -> None:
+    """Print scores for adaptive rate error
+
+    :param scores: dict with results
+    :return: None
+    """
+    print(f'\n-------------------RESULTS - ADAPTIVE RATE ERROR--------------------\n')
+    print(f'image_name{" ":7}are{" ":6}prec{" ":6}recall')
+    for img_name, scores in scores.items():
+        print(f'{img_name}{" ":5}{scores[0]:.3f}{" ":4}{scores[1]:.3f}{" ":5}{scores[2]:.3f}')
 
 
 def plot_fitness_function_per_image(qualities: Dict, img_name: str) -> plt.figure:
@@ -77,7 +89,7 @@ def plot_fitness_function_per_image(qualities: Dict, img_name: str) -> plt.figur
     return fig
 
 
-def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict) -> str:
+def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict, slice_output=None) -> str:
     """Save plots to pdf.
 
     :param algo_output: segmented images
@@ -89,6 +101,8 @@ def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict) -> str:
     for img_name, value in qualities.items():
         figs.append(plot_fitness_function_per_image(qualities[img_name], img_name))
         figs.append(plot_gt_and_result(gt[img_name][0], algo_output[img_name][0]))
+        if slice_output is not None:
+            figs.append(plot_gt_and_result(gt[img_name][0], slice_output[img_name]))
 
     report_name = f"ga_{datetime.datetime.now().strftime('%Y_%m_%dT%H_%M')}.pdf"
     pp = PdfPages(f'results/{report_name}')

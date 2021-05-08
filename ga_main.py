@@ -3,19 +3,18 @@ import tqdm
 import logging
 import argparse
 import numpy as np
+from typing import Tuple
 
-from scipy.spatial import distance
-from collections import defaultdict
-from typing import List, Tuple, Dict
 from enums import SelectionMethod, MutationType, CodingMethod
-from utils import save_run_parameters, plot_to_pdf, print_results
-from selection import select_by_rank_method, select_by_roulette_method, select_by_tournament_method
-from coding import generate_new_population_classic, generate_new_population_permutational, generate_new_population_woody
-from mutation import perform_mutation_inversion, perform_mutation_removal, perform_mutation_substitution
+from utils import save_run_parameters, plot_to_pdf, print_results, print_results_are
 from process_dataset_voc import get_images_and_gt_from_dataset
+from comparison import run_slic_algorithm, compare_results_slic
+from error_metrics import compare_results, calculate_adapted_rand_error, calculate_adapted_rand_error_slic
+from internals import generate_initial_population, calculate_fitness_function, select_reproductive_group, \
+    generate_new_population, perform_mutation, get_final_result, check_end_criterion
 
 parser = argparse.ArgumentParser(description='Adaptive Image Segmentation Algorithm')
-parser.add_argument('--nb-of-iterations', default=50, type=int,
+parser.add_argument('--nb-of-iterations', default=5, type=int,
                     help='Number of algorithms iterations')
 parser.add_argument('--nb-of-clusters', default=4, type=int,
                     help='Number of clusters for the image')
@@ -33,6 +32,10 @@ parser.add_argument('--image-size', default=(200, 200), type=tuple,
                     help='Size of the image to be segmented')
 parser.add_argument('--dataset', default='images/simple', type=str,
                     help='Path to dataset to evaluate algorithm')
+parser.add_argument('--compare-slic', default=True, type=bool,
+                    help='Compare outputs with outputs from SLIC algorithm')
+parser.add_argument('--calculate-are', default=True, type=bool,
+                    help='Calculate adaptive rand error ')
 
 # Set random seed
 np.random.seed(seed=1)
@@ -42,204 +45,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
-
-
-def generate_initial_population(population_size: int, number_of_clusters: int,
-                                image_size: Tuple, image: np.array) -> List:
-    """Generate possible solutions at the start of the algorithm
-
-    :param population_size: number of chromosomes
-    :param number_of_clusters: number of areas that picture must be divided into
-    :param image_size: size of the input image
-    :param image: algorithm's input image
-    :return: list of possible solutions
-    """
-    population = []
-    for i in range(population_size):
-        chromosome = defaultdict()
-        for j in range(0, number_of_clusters):
-            # Generate cluster centre
-            x = np.random.randint(0, image_size[0])
-            y = np.random.randint(0, image_size[1])
-            cluster = image[x, y, :]
-            chromosome[j] = cluster
-        population.append(chromosome)
-    return population
-
-
-def assign_labels_based_on_chromosome(chromosome: defaultdict, image_size: Tuple, image: np.array) -> Tuple:
-    """Assign label to each pixel in the picture based on cluster centres and euclidean distance
-
-    :param image: image to be segmented
-    :param chromosome: one possible solution
-    :param image_size: dimensions of an image
-    :return: segmented image, distances from centre
-    """
-    labels = np.ones(image_size) * (-1)
-    centre_distances = np.ones(image_size) * (-1)
-    for i in range(image_size[0]):
-        for j in range(image_size[1]):
-            min_distance = 1e100
-            min_cluster_label = -1
-            for k in range(len(chromosome)):  # k-cluster
-                # Calculate distance
-                tmp_dist = distance.euclidean(chromosome[k], image[i, j, :])
-                if tmp_dist < min_distance:
-                    min_distance = tmp_dist
-                    min_cluster_label = k
-            # Set label
-            labels[i, j] = min_cluster_label
-            centre_distances[i, j] = min_distance
-
-    return np.array(labels, dtype=int), centre_distances
-
-
-def calculate_fitness_function(chromosome: defaultdict, image_size: Tuple, image: np.array) -> float:
-    """Calculate quality. Sum of min distances in each cluster in each chromosome.
-
-    :param chromosome: one particular solution
-    :param image_size: image dimension
-    :param image: image to be segmented
-    :return: value of fitness function
-    """
-    quality = 0
-    labels, centre_distances = assign_labels_based_on_chromosome(chromosome, image_size, image)
-    # There where centre_distances == 0 set high value - to avoid choosing it
-    centre_distances = np.where(centre_distances == 0, 1e100, centre_distances)
-    for k in range(len(chromosome)):
-        try:
-            min_distance = np.amin(centre_distances[labels == k])
-        except:
-            continue
-        quality += min_distance
-        # Replace chromosome centre with mean cluster values
-        indices = np.where(labels == k)
-        new_center = (int(sum(indices[0])/len(indices[0])), int(sum(indices[1])/len(indices[1])))
-        chromosome[k] = image[new_center[0], new_center[1], :]
-    return quality
-
-
-def generate_new_population(reproductive_group: List, qualities: List, method: CodingMethod,
-                            population_size: int, number_of_clusters: int, image_size: Tuple,
-                            image: np.array, coding_probability: float, current_population: List) -> List:
-    """Generate new population, based on chromosomes selected from current population,
-    according to publication best chromosome survives others are random
-
-    :param current_population: population in current iteration
-    :param coding_probability: threshold probability for performing coding
-    :param population_size: number of solutions in population
-    :param image: input image
-    :param number_of_clusters: number of parts to divide picture
-    :param image_size: size of the input  image
-    :param qualities: values of the fitness function for each solution
-    :param reproductive_group: group with best, according to fitness function, solutions
-    :param method: the way of coding
-    :return: new population
-    """
-    if method == CodingMethod.CLASSIC:
-        new_population = generate_new_population_classic(reproductive_group=reproductive_group,
-                                                         coding_probability=coding_probability)
-    elif method == CodingMethod.PERMUTATIONAL:
-        new_population = generate_new_population_permutational(reproductive_group=reproductive_group)
-    elif method == CodingMethod.WOODY:
-        new_population = generate_new_population_woody(reproductive_group=reproductive_group)
-    elif method == CodingMethod.PUBLICATION:
-        new_population = generate_initial_population(image_size=image_size,
-                                                     image=image,
-                                                     population_size=population_size,
-                                                     number_of_clusters=number_of_clusters)
-        new_population[0] = select_best_chromosome(new_population, qualities)  # according to publication best chromosome is kept
-    else:
-        raise ValueError(f'Invalid coding method passed!')
-    return new_population
-
-
-def select_reproductive_group(current_population: List, qualities: List, method: SelectionMethod) -> List:
-    """Select reproductive group according to qualities and selected method
-
-    :param current_population: current group of solutions
-    :param qualities: values of fitness function
-    :param method: Method of selection
-    :return: best possible solutions in population
-    """
-    if method == SelectionMethod.RANK:
-        reproductive_group = select_by_rank_method(population=current_population,
-                                                   qualities=qualities,
-                                                   reproduction_size=int(len(current_population)/2))
-    elif method == SelectionMethod.ROULETTE:
-        reproductive_group = select_by_roulette_method(population=current_population,
-                                                       qualities=qualities,
-                                                       reproduction_size=int(len(current_population)/2))
-    elif method == SelectionMethod.TOURNAMENT:
-        reproductive_group = select_by_tournament_method(population=current_population,
-                                                         qualities=qualities,
-                                                         reproduction_size=int(len(current_population)/2))
-    elif method == SelectionMethod.PUBLICATION:
-        reproductive_group = current_population
-    else:
-        raise ValueError(f'Invalid selection method passed!')
-    return reproductive_group
-
-
-def perform_mutation(new_population: List, method: MutationType, mutation_probability: float = 0.1) -> List:
-    """Mutate some of the chromosomes.
-
-    :param mutation_probability: probability of performing mutation
-    :param new_population: generated new solutions
-    :param method: type of the mutation
-    :return: mutated solution
-    """
-    if np.random.randint(0, 100) < 100 * mutation_probability:
-        if method == MutationType.INVERSION:
-            new_population = perform_mutation_inversion(population=new_population)
-        elif method == MutationType.REMOVAL:
-            new_population = perform_mutation_removal(population=new_population)
-        elif method == MutationType.SUBSTITUTION:
-            new_population = perform_mutation_substitution(population=new_population)
-        elif method == MutationType.PUBLICATION:
-            new_population = new_population
-        else:
-            raise ValueError(f'Invalid mutation type passed!')
-
-    return new_population
-
-
-def check_end_criterion() -> bool:
-    """Check if algorithm can be ended.
-
-    :return: True if criterion passed, otherwise False
-    """
-    # According to publication the number of iterations is predefined
-    pass
-
-
-def select_best_chromosome(population: List, qualities: List) -> defaultdict:
-    """Select best solution based on fitness function.
-
-    :param population: current group of solutions
-    :param qualities: list of qualities for each solution
-    :return: best chromosome according to quality
-    """
-    best_chromosome = population[qualities.index(max(qualities))]
-    return best_chromosome
-
-
-def get_final_result(population: List, image_size: Tuple, image: np.array) -> np.array:
-    """Get best image.
-
-    :param image: input image
-    :param image_size: size of the input image
-    :param population: object
-    :return: segmented image.
-    """
-    qualities = []
-    for chromosome in population:
-        quality = calculate_fitness_function(chromosome, image_size, image)
-        qualities.append(quality)
-
-    best_chromosome = select_best_chromosome(population, qualities)
-    best_segmentation = assign_labels_based_on_chromosome(best_chromosome, image_size, image)
-    return best_segmentation[0], best_chromosome
 
 
 def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
@@ -253,7 +58,7 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
     :param coding_type: coding method to be used
     :param selection_method: selection method to be used
     :param mutation_type: mutation type to be used
-    :param crossover_rate:
+    :param crossover_rate: probability of performing crossover
     :return: segmented image
     """
     # Buffers for data over iterations
@@ -303,7 +108,7 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
                                                  image_size=image_size,
                                                  image=image_rgb,
                                                  current_population=population,
-                                                 coding_probability=args.crossover_rate)
+                                                 coding_probability=crossover_rate)
         # Mutate
         new_population_mutated = perform_mutation(new_population=new_population,
                                                   method=mutation_type)
@@ -318,40 +123,11 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
     return segmented_image, best_chromosome, populations_and_qualities
 
 
-def compare_results(ground_truth: Dict, algo_output: Dict):
-    """Compare both outputs and return score
-
-    :param ground_truth: Dict with names and gt
-    :param algo_output: dict with output
-    :return: Dictionary name : score
-    """
-    scores = {}
-    for img_name, gt in ground_truth.items():
-        try:
-            algo_img = algo_output[img_name][0]
-            algo_chromosome = algo_output[img_name][1]
-            gt = dataset_gt[name][0]
-            best_lab, best_dist = assign_labels_based_on_chromosome(algo_chromosome, args.image_size, image)
-            score = 0
-            for i in range(dataset_gt[name][1]):
-                label_indexes = np.where(algo_img == i)
-                centre_index = np.argmin(best_dist[algo_img == 0]) #np.where(best_dist[algo_img == 0] == 0)[0]
-                label_gt = gt[label_indexes[0][centre_index], label_indexes[1][centre_index]]
-                tmp_gt = np.ones(args.image_size) * 100
-                tmp_gt[np.where(gt == label_gt)] = label_gt
-                score += np.sum(tmp_gt == algo_img)
-
-            scores.update({img_name: score/(args.image_size[0] * args.image_size[1])})
-        except:
-            continue
-    return scores
-
-
-if __name__ == '__main__':
-    args = parser.parse_args()
-
+def ga_main() -> None:
     dataset_images, dataset_gt = get_images_and_gt_from_dataset(args.dataset, args.image_size)
     algo_output = {}
+    if args.compare_slic:
+        slic_output = {}
     qualities_and_populations = {}
     for name, image in dataset_images.items():
         logging.info(f'Processing image: {name}.png')
@@ -365,16 +141,43 @@ if __name__ == '__main__':
         # Save populations and qualities for later
         qualities_and_populations.update({name: qualities})
         algo_output.update({name: (best_img, best_chromosome)})
+        if args.compare_slic:
+            slic_img = run_slic_algorithm(image=image,
+                                          nb_of_clusters=dataset_gt[name][1],
+                                          image_size=args.image_size)
+            slic_output.update({name: slic_img})
 
-    logging.info('Calculating accuracy score ... ')
+    logging.info('Calculating accuracy scores ... ')
+    # Pixel to pixel comparison
     scores = compare_results(ground_truth=dataset_gt,
-                             algo_output=algo_output)
+                             algo_output=algo_output,
+                             image_size=args.image_size,
+                             images=dataset_images)
+    if args.compare_slic:
+        scores_slic = compare_results_slic(slic_output, dataset_gt)
+
+    # Adapted Rand Error
+    if args.calculate_are:
+        scores_are = calculate_adapted_rand_error(dataset_gt, algo_output)
+        if args.compare_slic:
+            scores_are_slice = calculate_adapted_rand_error_slic(dataset_gt, slic_output)
+
+    # Print results
     print_results(scores)
+    if args.calculate_are:
+        print_results_are(scores_are)
+
+    if args.compare_slic:
+        logging.info('--------------------SLIC SCORES--------------------')
+        print_results(scores_slic)
+        if args.calculate_are:
+            print_results_are(scores_are_slice)
 
     logging.info('Saving to pdf ...')
     pdf_name = plot_to_pdf(gt=dataset_gt,
                            algo_output=algo_output,
-                           qualities=qualities_and_populations)
+                           qualities=qualities_and_populations,
+                           slice_output=slic_output)
 
     logging.info('Saving run parameters and results ...')
     save_run_parameters(dataset=args.dataset,
@@ -385,14 +188,12 @@ if __name__ == '__main__':
                         mutation_type=args.mutation_type,
                         crossover_rate=args.crossover_rate,
                         scores=scores,
+                        scores_are=scores_are if args.calculate_are else None,
+                        scores_slic=scores_slic if args.compare_slic else None,
+                        scores_are_slice=scores_are_slice if (args.calculate_are and args.compare_slic) else None,
                         pdf_file=pdf_name)
 
-    pass
-    #                                nb_of_iterations=args.nb_of_iterations,
-    #                                nb_of_clusters=args.nb_of_clusters,
-    #                                coding_type=args.coding_method,
-    #                                selection_method=args.selection_method,
-    #                                mutation_type=args.mutation_type,
-    #                                crossover_rate=args.crossover_rate)
 
-    #visualize_based_on_label(labels=best, orginal=orginal)
+if __name__ == '__main__':
+    args = parser.parse_args()
+    ga_main()
