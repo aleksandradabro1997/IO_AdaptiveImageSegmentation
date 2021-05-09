@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mutation &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
+    <title>comparison &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -16,8 +16,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="selection" href="selection.html" />
-    <link rel="prev" title="coding module" href="coding.html" /> 
+    <link rel="next" title="process_dataset_voc" href="process_dataset_voc.html" />
+    <link rel="prev" title="selection" href="selection.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,14 +29,14 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="selection.html" title="selection"
+          <a href="process_dataset_voc.html" title="process_dataset_voc"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="coding.html" title="coding module"
+          <a href="selection.html" title="selection"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">IO_AdaptiveImageSegmentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">mutation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">comparison</a></li> 
       </ul>
     </div>  
 
@@ -45,40 +45,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-mutation">
-<span id="mutation"></span><h1>mutation<a class="headerlink" href="#module-mutation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-comparison">
+<span id="comparison"></span><h1>comparison<a class="headerlink" href="#module-comparison" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="mutation.perform_mutation_inversion">
-<code class="sig-prename descclassname"><span class="pre">mutation.</span></code><code class="sig-name descname"><span class="pre">perform_mutation_inversion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#mutation.perform_mutation_inversion" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>population</strong> – current population</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>mutated population</p>
-</dd>
-</dl>
+<dt id="comparison.compare_results_slic">
+<code class="sig-prename descclassname"><span class="pre">comparison.</span></code><code class="sig-name descname"><span class="pre">compare_results_slic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slic_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><a class="headerlink" href="#comparison.compare_results_slic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare SLIC output with ground truth and return score.
+:param slic_img: output of SLIC algorithm
+:param ground_truth: ground truth values
+:return: score</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="mutation.perform_mutation_removal">
-<code class="sig-prename descclassname"><span class="pre">mutation.</span></code><code class="sig-name descname"><span class="pre">perform_mutation_removal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#mutation.perform_mutation_removal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove chromosome from population
-:param population: current population
-:return: current population</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="mutation.perform_mutation_substitution">
-<code class="sig-prename descclassname"><span class="pre">mutation.</span></code><code class="sig-name descname"><span class="pre">perform_mutation_substitution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#mutation.perform_mutation_substitution" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>population</strong> – current population</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>mutated population</p>
-</dd>
-</dl>
+<dt id="comparison.run_slic_algorithm">
+<code class="sig-prename descclassname"><span class="pre">comparison.</span></code><code class="sig-name descname"><span class="pre">run_slic_algorithm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.array</span><a class="headerlink" href="#comparison.run_slic_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs SLIC algorithm from skimage
+:param image - input image
+:param nb_of_clusters - number of output image segments according to ground truth
+:return: segmentation result</p>
 </dd></dl>
 
 </div>
@@ -91,15 +75,15 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="coding.html"
-                        title="previous chapter">coding module</a></p>
-  <h4>Next topic</h4>
   <p class="topless"><a href="selection.html"
-                        title="next chapter">selection</a></p>
+                        title="previous chapter">selection</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="process_dataset_voc.html"
+                        title="next chapter">process_dataset_voc</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/mutation.rst.txt"
+      <li><a href="_sources/comparison.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -127,14 +111,14 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="selection.html" title="selection"
+          <a href="process_dataset_voc.html" title="process_dataset_voc"
              >next</a> |</li>
         <li class="right" >
-          <a href="coding.html" title="coding module"
+          <a href="selection.html" title="selection"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >IO_AdaptiveImageSegmentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">mutation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">comparison</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -14,7 +14,7 @@ def run_slic_algorithm(image: np.array, nb_of_clusters: int, image_size: Tuple) 
     :return: segmentation result
     """
     image = cv2.resize(image, image_size)
-    img_slic = seg.slic(image, n_segments=nb_of_clusters, compactness=10, max_iter=10, convert2lab=True)
+    img_slic = seg.slic(image, n_segments=nb_of_clusters, compactness=10, max_iter=10, convert2lab=True, sigma=1)
     return img_slic
 
 

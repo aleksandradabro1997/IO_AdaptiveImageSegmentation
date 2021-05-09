@@ -10,3 +10,7 @@ IO_AdaptiveImageSegmentation
    coding
    mutation
    selection
+   comparison
+   process_dataset_voc
+   internals
+   error_metrics

@@ -14,13 +14,11 @@ from internals import generate_initial_population, calculate_fitness_function, s
     generate_new_population, perform_mutation, get_final_result, check_end_criterion
 
 parser = argparse.ArgumentParser(description='Adaptive Image Segmentation Algorithm')
-parser.add_argument('--nb-of-iterations', default=5, type=int,
+parser.add_argument('--nb-of-iterations', default=10, type=int,
                     help='Number of algorithms iterations')
-parser.add_argument('--nb-of-clusters', default=4, type=int,
-                    help='Number of clusters for the image')
 parser.add_argument('--coding-method', default=CodingMethod.PUBLICATION, type=int,
                     help='One of 3 coding types (classic, permutational, woody)')
-parser.add_argument('--selection-method', default=SelectionMethod.PUBLICATION, type=int,
+parser.add_argument('--selection-method', default=SelectionMethod.TOURNAMENT, type=int,
                     help='Type of selection method (roulette, rank, tournament)')
 parser.add_argument('--mutation-type', default=MutationType.PUBLICATION, type=int,
                     help='Mutation type')
@@ -36,6 +34,9 @@ parser.add_argument('--compare-slic', default=True, type=bool,
                     help='Compare outputs with outputs from SLIC algorithm')
 parser.add_argument('--calculate-are', default=True, type=bool,
                     help='Calculate adaptive rand error ')
+parser.add_argument('--remove-noise', default=True, type=bool,
+                    help='Calculate adaptive rand error ')
+
 
 # Set random seed
 np.random.seed(seed=1)
@@ -124,12 +125,18 @@ def ga_segmentation(image: str, nb_of_iterations: int, nb_of_clusters: int,
 
 
 def ga_main() -> None:
+    """Process whole dataset, calculate scores and save results.
+
+    :return: None
+    """
     dataset_images, dataset_gt = get_images_and_gt_from_dataset(args.dataset, args.image_size)
     algo_output = {}
     if args.compare_slic:
         slic_output = {}
     qualities_and_populations = {}
     for name, image in dataset_images.items():
+        if args.remove_noise:
+            image = cv2.fastNlMeansDenoisingColored(image)
         logging.info(f'Processing image: {name}.png')
         best_img, best_chromosome, qualities = ga_segmentation(image=image,
                                                                nb_of_iterations=args.nb_of_iterations,

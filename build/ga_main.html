@@ -48,65 +48,12 @@
   <div class="section" id="module-ga_main">
 <span id="ga-main-module"></span><h1>ga_main module<a class="headerlink" href="#module-ga_main" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="ga_main.assign_labels_based_on_chromosome">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">assign_labels_based_on_chromosome</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chromosome</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.defaultdict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><a class="headerlink" href="#ga_main.assign_labels_based_on_chromosome" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assign label to each pixel in the picture based on cluster centres and euclidean distance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> – image to be segmented</p></li>
-<li><p><strong>chromosome</strong> – one possible solution</p></li>
-<li><p><strong>image_size</strong> – dimensions of an image</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>segmented image, distances from centre</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.calculate_fitness_function">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">calculate_fitness_function</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chromosome</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.defaultdict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#ga_main.calculate_fitness_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate quality. Sum of min distances in each cluster in each chromosome.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>chromosome</strong> – one particular solution</p></li>
-<li><p><strong>image_size</strong> – image dimension</p></li>
-<li><p><strong>image</strong> – image to be segmented</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>value of fitness function</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.check_end_criterion">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">check_end_criterion</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#ga_main.check_end_criterion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if algorithm can be ended.</p>
+<dt id="ga_main.ga_main">
+<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">ga_main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ga_main.ga_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process whole dataset, calculate scores and save results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True if criterion passed, otherwise False</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.compare_results">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">compare_results</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ga_main.compare_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compare both outputs and return score</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ground_truth</strong> – Dict with names and gt</p></li>
-<li><p><strong>algo_output</strong> – dict with output</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary name : score</p>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -124,126 +71,11 @@
 <li><p><strong>coding_type</strong> – coding method to be used</p></li>
 <li><p><strong>selection_method</strong> – selection method to be used</p></li>
 <li><p><strong>mutation_type</strong> – mutation type to be used</p></li>
-<li><p><strong>crossover_rate</strong> – </p></li>
+<li><p><strong>crossover_rate</strong> – probability of performing crossover</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>segmented image</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.generate_initial_population">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">generate_initial_population</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.generate_initial_population" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate possible solutions at the start of the algorithm</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>population_size</strong> – number of chromosomes</p></li>
-<li><p><strong>number_of_clusters</strong> – number of areas that picture must be divided into</p></li>
-<li><p><strong>image_size</strong> – size of the input image</p></li>
-<li><p><strong>image</strong> – algorithm’s input image</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of possible solutions</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.generate_new_population">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">generate_new_population</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reproductive_group</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.CodingMethod" title="enums.CodingMethod"><span class="pre">enums.CodingMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coding_probability</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.generate_new_population" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate new population, based on chromosomes selected from current population,
-according to publication best chromosome survives others are random</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>current_population</strong> – population in current iteration</p></li>
-<li><p><strong>coding_probability</strong> – threshold probability for performing coding</p></li>
-<li><p><strong>population_size</strong> – number of solutions in population</p></li>
-<li><p><strong>image</strong> – input image</p></li>
-<li><p><strong>number_of_clusters</strong> – number of parts to divide picture</p></li>
-<li><p><strong>image_size</strong> – size of the input  image</p></li>
-<li><p><strong>qualities</strong> – values of the fitness function for each solution</p></li>
-<li><p><strong>reproductive_group</strong> – group with best, according to fitness function, solutions</p></li>
-<li><p><strong>method</strong> – the way of coding</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>new population</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.get_final_result">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">get_final_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">numpy.array</span><a class="headerlink" href="#ga_main.get_final_result" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get best image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> – input image</p></li>
-<li><p><strong>image_size</strong> – size of the input image</p></li>
-<li><p><strong>population</strong> – object</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>segmented image.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.perform_mutation">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">perform_mutation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.MutationType" title="enums.MutationType"><span class="pre">enums.MutationType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_probability</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.perform_mutation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mutate some of the chromosomes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mutation_probability</strong> – probability of performing mutation</p></li>
-<li><p><strong>new_population</strong> – generated new solutions</p></li>
-<li><p><strong>method</strong> – type of the mutation</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>mutated solution</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.select_best_chromosome">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">select_best_chromosome</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">collections.defaultdict</span><a class="headerlink" href="#ga_main.select_best_chromosome" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select best solution based on fitness function.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>population</strong> – current group of solutions</p></li>
-<li><p><strong>qualities</strong> – list of qualities for each solution</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>best chromosome according to quality</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="ga_main.select_reproductive_group">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">select_reproductive_group</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_population</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualities</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.SelectionMethod" title="enums.SelectionMethod"><span class="pre">enums.SelectionMethod</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><a class="headerlink" href="#ga_main.select_reproductive_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select reproductive group according to qualities and selected method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>current_population</strong> – current group of solutions</p></li>
-<li><p><strong>qualities</strong> – values of fitness function</p></li>
-<li><p><strong>method</strong> – Method of selection</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>best possible solutions in population</p>
 </dd>
 </dl>
 </dd></dl>

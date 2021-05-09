@@ -53,11 +53,7 @@ def produce_ground_truth(dataset_path: str, size: Tuple) -> Dict:
 
 
 def get_number_of_elements_from_xml(xml_path: str) -> int:
-    """Get number of elements in image based on *.xml file.
 
-    :param xml_path: path to *.xml file with description
-    :return: number of clusters on image
-    """
     with open(xml_path, 'r') as xml:
         content = xml.readlines()
     nb_of_clusters = 0
