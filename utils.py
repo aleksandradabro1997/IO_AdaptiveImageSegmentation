@@ -81,7 +81,7 @@ def plot_fitness_function_per_image(qualities: Dict, img_name: str) -> plt.figur
     :return: plot
     """
     fig = plt.figure()
-    plt.plot(range(1, len(qualities)+1), [max(x['quality']) for x in qualities], 'bo-')
+    plt.plot(range(1, len(qualities)+1), [max(x['quality'], key=lambda c: c[1])[1] for x in qualities], 'bo-')
     plt.xlabel('Iteration')
     plt.ylabel('Fitness function value')
     plt.grid()
@@ -89,12 +89,14 @@ def plot_fitness_function_per_image(qualities: Dict, img_name: str) -> plt.figur
     return fig
 
 
-def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict, slice_output=None) -> str:
+def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict, slice_output=None, kmeans_output=None) -> str:
     """Save plots to pdf.
 
     :param algo_output: segmented images
     :param gt: ground truth values
     :param qualities: values from algorithm
+    :param slice_output: SLIC output
+    :param kmeans_output: K-MEANS output
     :return: None
     """
     figs = []
@@ -103,6 +105,8 @@ def plot_to_pdf(gt: Dict, algo_output: Dict, qualities: Dict, slice_output=None)
         figs.append(plot_gt_and_result(gt[img_name][0], algo_output[img_name][0]))
         if slice_output is not None:
             figs.append(plot_gt_and_result(gt[img_name][0], slice_output[img_name]))
+        if kmeans_output is not None:
+            figs.append(plot_gt_and_result(gt[img_name][0], kmeans_output[img_name]))
 
     report_name = f"ga_{datetime.datetime.now().strftime('%Y_%m_%dT%H_%M')}.pdf"
     pp = PdfPages(f'results/{report_name}')

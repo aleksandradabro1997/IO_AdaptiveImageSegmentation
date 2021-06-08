@@ -21,9 +21,9 @@ class MutationType(IntEnum):
     """
     Class with mutation types for GA.
 
-    - INVERSION -
-    - SUBSTITUTION -
-    - REMOVAL -
+    - INVERSION - replace elements
+    - SUBSTITUTION - substitute elements
+    - REMOVAL - remove element from population
     """
     INVERSION = 0
     SUBSTITUTION = 1
@@ -35,12 +35,19 @@ class CodingMethod(IntEnum):
     """
     Class with coding methods for GA.
 
-    - CLASSIC -
-    - PERMUTATIONAL -
-    - WOODY -
-    - PUBLICATION -
+    - CLASSIC - classic coding
+    - PUBLICATION - coding as in publication
     """
     CLASSIC = 0
-    PERMUTATIONAL = 1
-    WOODY = 2
-    PUBLICATION = 3
+    PUBLICATION = 1
+
+
+class PopulationSize(IntEnum):
+    """
+    Class with coding methods for GA.
+
+    - PUBLICATION - choose number within <n-3, n+3>
+    - VOC - get exact number
+    """
+    PUBLICATION = 0
+    VOC = 1

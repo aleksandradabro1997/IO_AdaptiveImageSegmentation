@@ -6,7 +6,7 @@ from typing import Dict, Tuple
 import cv2
 
 
-def run_slic_algorithm(image: np.array, nb_of_clusters: int, image_size: Tuple) -> np.array:
+def run_slic_algorithm(image: np.array, nb_of_clusters: int, image_size: Tuple, nb_of_iterations: int) -> np.array:
     """
     Runs SLIC algorithm from skimage
     :param image - input image
@@ -14,7 +14,7 @@ def run_slic_algorithm(image: np.array, nb_of_clusters: int, image_size: Tuple) 
     :return: segmentation result
     """
     image = cv2.resize(image, image_size)
-    img_slic = seg.slic(image, n_segments=nb_of_clusters, compactness=10, max_iter=10, convert2lab=True, sigma=1)
+    img_slic = seg.slic(image, n_segments=nb_of_clusters, compactness=10, max_iter=nb_of_iterations, convert2lab=True, sigma=1)
     return img_slic
 
 
@@ -35,3 +35,26 @@ def compare_results_slic(slic_output: Dict, ground_truth: Dict) -> Dict:
         except:
             continue
     return scores
+
+
+def run_k_means(image: np.array, nb_of_clusters: int, image_size: Tuple, nb_of_iterations: int) -> np.array:
+    """Segment image using k-means algorithm
+
+    :param image: input image
+    :param nb_of_clusters: number of segments
+    :param image_size: size of image
+    :return: segmented image
+    """
+    image = cv2.resize(image, image_size)
+    # convert to RGB
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # reshape the image to a 2D array of pixels and 3 color values (RGB)
+    pixel_values = image.reshape((-1, 3))
+    # convert to float
+    pixel_values = np.float32(pixel_values)
+    # define stopping criteria
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2)
+    # number of clusters (K)
+    k = nb_of_clusters
+    _, labels, (centers) = cv2.kmeans(pixel_values, k, None, criteria, nb_of_iterations, cv2.KMEANS_RANDOM_CENTERS)
+    return labels.reshape(image_size)

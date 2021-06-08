@@ -4,12 +4,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>ga_main module &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -45,11 +46,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-ga_main">
+  <section id="module-ga_main">
 <span id="ga-main-module"></span><h1>ga_main module<a class="headerlink" href="#module-ga_main" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="ga_main.ga_main">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">ga_main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ga_main.ga_main" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ga_main.ga_main">
+<span class="sig-prename descclassname"><span class="pre">ga_main.</span></span><span class="sig-name descname"><span class="pre">ga_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#ga_main.ga_main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process whole dataset, calculate scores and save results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -59,8 +60,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="ga_main.ga_segmentation">
-<code class="sig-prename descclassname"><span class="pre">ga_main.</span></code><code class="sig-name descname"><span class="pre">ga_segmentation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_iterations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coding_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.CodingMethod" title="enums.CodingMethod"><span class="pre">enums.CodingMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.SelectionMethod" title="enums.SelectionMethod"><span class="pre">enums.SelectionMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.MutationType" title="enums.MutationType"><span class="pre">enums.MutationType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossover_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><a class="headerlink" href="#ga_main.ga_segmentation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ga_main.ga_segmentation">
+<span class="sig-prename descclassname"><span class="pre">ga_main.</span></span><span class="sig-name descname"><span class="pre">ga_segmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_iterations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_of_clusters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coding_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.CodingMethod" title="enums.CodingMethod"><span class="pre">enums.CodingMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.SelectionMethod" title="enums.SelectionMethod"><span class="pre">enums.SelectionMethod</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="enums.html#enums.MutationType" title="enums.MutationType"><span class="pre">enums.MutationType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossover_rate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><a class="headerlink" href="#ga_main.ga_segmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main algorithm function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -80,7 +81,7 @@
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -138,7 +139,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Aleksandra Dabrowska, Jerzy Dabrowski, Kinga Talaga.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>

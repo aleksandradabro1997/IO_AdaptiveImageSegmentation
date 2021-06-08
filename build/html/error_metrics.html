@@ -4,12 +4,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>error_metrics &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -41,11 +42,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-error_metrics">
+  <section id="module-error_metrics">
 <span id="error-metrics"></span><h1>error_metrics<a class="headerlink" href="#module-error_metrics" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="error_metrics.calculate_adapted_rand_error">
-<code class="sig-prename descclassname"><span class="pre">error_metrics.</span></code><code class="sig-name descname"><span class="pre">calculate_adapted_rand_error</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><a class="headerlink" href="#error_metrics.calculate_adapted_rand_error" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="error_metrics.calculate_adapted_rand_error">
+<span class="sig-prename descclassname"><span class="pre">error_metrics.</span></span><span class="sig-name descname"><span class="pre">calculate_adapted_rand_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><a class="headerlink" href="#error_metrics.calculate_adapted_rand_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Adapted Rand error as defined by the SNEMI3D contest
 :param ground_truth: Dict with names and gt
 :param algo_output: Dict with Adaptive Segmentation results
@@ -53,8 +54,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="error_metrics.calculate_adapted_rand_error_slic">
-<code class="sig-prename descclassname"><span class="pre">error_metrics.</span></code><code class="sig-name descname"><span class="pre">calculate_adapted_rand_error_slic</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><a class="headerlink" href="#error_metrics.calculate_adapted_rand_error_slic" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="error_metrics.calculate_adapted_rand_error_slic">
+<span class="sig-prename descclassname"><span class="pre">error_metrics.</span></span><span class="sig-name descname"><span class="pre">calculate_adapted_rand_error_slic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><a class="headerlink" href="#error_metrics.calculate_adapted_rand_error_slic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Adapted Rand error as defined by the SNEMI3D contest
 :param ground_truth: Dict with names and gt
 :param algo_output: Dict with Adaptive Segmentation results
@@ -62,8 +63,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="error_metrics.compare_results">
-<code class="sig-prename descclassname"><span class="pre">error_metrics.</span></code><code class="sig-name descname"><span class="pre">compare_results</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#error_metrics.compare_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="error_metrics.compare_results">
+<span class="sig-prename descclassname"><span class="pre">error_metrics.</span></span><span class="sig-name descname"><span class="pre">compare_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo_output</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#error_metrics.compare_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare both outputs and return score</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -80,7 +81,7 @@
 </dl>
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -132,7 +133,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Aleksandra Dabrowska, Jerzy Dabrowski, Kinga Talaga.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>

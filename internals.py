@@ -113,7 +113,7 @@ def generate_new_population(reproductive_group: List, qualities: List, method: C
                                                      image=image,
                                                      population_size=population_size,
                                                      number_of_clusters=number_of_clusters)
-        new_population[0] = select_best_chromosome(new_population, qualities)  # according to publication best chromosome is kept
+        new_population[0] = select_best_chromosome(reproductive_group, qualities)  # according to publication best chromosome is kept
     else:
         raise ValueError(f'Invalid coding method passed!')
     return new_population
@@ -127,6 +127,7 @@ def select_reproductive_group(current_population: List, qualities: List, method:
     :param method: Method of selection
     :return: best possible solutions in population
     """
+    qualities = [x[1] for x in qualities]
     if method == SelectionMethod.RANK:
         reproductive_group = select_by_rank_method(population=current_population,
                                                    qualities=qualities,
@@ -185,7 +186,7 @@ def select_best_chromosome(population: List, qualities: List) -> defaultdict:
     :param qualities: list of qualities for each solution
     :return: best chromosome according to quality
     """
-    best_chromosome = population[qualities.index(max(qualities))]
+    best_chromosome = (max(qualities, key=lambda x: x[1]))[0]
     return best_chromosome
 
 
@@ -200,7 +201,7 @@ def get_final_result(population: List, image_size: Tuple, image: np.array) -> np
     qualities = []
     for chromosome in population:
         quality = calculate_fitness_function(chromosome, image_size, image)
-        qualities.append(quality)
+        qualities.append((chromosome, quality))
 
     best_chromosome = select_best_chromosome(population, qualities)
     best_segmentation = assign_labels_based_on_chromosome(best_chromosome, image_size, image)

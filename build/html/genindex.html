@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; Adaptive Image Segmentation using Genetic Algorithm 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -51,7 +51,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
- | <a href="#W"><strong>W</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -142,10 +142,10 @@
 </li>
       <li><a href="internals.html#internals.generate_initial_population">generate_initial_population() (in module internals)</a>
 </li>
-      <li><a href="internals.html#internals.generate_new_population">generate_new_population() (in module internals)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="internals.html#internals.generate_new_population">generate_new_population() (in module internals)</a>
+</li>
       <li><a href="coding.html#coding.generate_new_population_classic">generate_new_population_classic() (in module coding)</a>
 </li>
       <li><a href="coding.html#coding.generate_new_population_permutational">generate_new_population_permutational() (in module coding)</a>
@@ -155,8 +155,6 @@
       <li><a href="internals.html#internals.get_final_result">get_final_result() (in module internals)</a>
 </li>
       <li><a href="process_dataset_voc.html#process_dataset_voc.get_images_and_gt_from_dataset">get_images_and_gt_from_dataset() (in module process_dataset_voc)</a>
-</li>
-      <li><a href="process_dataset_voc.html#process_dataset_voc.get_number_of_elements_from_xml">get_number_of_elements_from_xml() (in module process_dataset_voc)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -231,13 +229,13 @@
 </li>
       <li><a href="mutation.html#mutation.perform_mutation_substitution">perform_mutation_substitution() (in module mutation)</a>
 </li>
-      <li><a href="enums.html#enums.CodingMethod.PERMUTATIONAL">PERMUTATIONAL (enums.CodingMethod attribute)</a>
-</li>
       <li><a href="utils.html#utils.plot_fitness_function_per_image">plot_fitness_function_per_image() (in module utils)</a>
 </li>
       <li><a href="utils.html#utils.plot_gt_and_result">plot_gt_and_result() (in module utils)</a>
 </li>
       <li><a href="utils.html#utils.plot_to_pdf">plot_to_pdf() (in module utils)</a>
+</li>
+      <li><a href="enums.html#enums.PopulationSize">PopulationSize (class in enums)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -259,6 +257,8 @@
       <ul>
         <li><a href="enums.html#enums.MutationType.PUBLICATION">(enums.MutationType attribute)</a>
 </li>
+        <li><a href="enums.html#enums.PopulationSize.PUBLICATION">(enums.PopulationSize attribute)</a>
+</li>
         <li><a href="enums.html#enums.SelectionMethod.PUBLICATION">(enums.SelectionMethod attribute)</a>
 </li>
       </ul></li>
@@ -272,11 +272,13 @@
 </li>
       <li><a href="process_dataset_voc.html#process_dataset_voc.read_all_images">read_all_images() (in module process_dataset_voc)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="enums.html#enums.MutationType.REMOVAL">REMOVAL (enums.MutationType attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="enums.html#enums.SelectionMethod.ROULETTE">ROULETTE (enums.SelectionMethod attribute)</a>
+</li>
+      <li><a href="comparison.html#comparison.run_k_means">run_k_means() (in module comparison)</a>
 </li>
       <li><a href="comparison.html#comparison.run_slic_algorithm">run_slic_algorithm() (in module comparison)</a>
 </li>
@@ -335,10 +337,10 @@
   </ul></td>
 </tr></table>
 
-<h2 id="W">W</h2>
+<h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="enums.html#enums.CodingMethod.WOODY">WOODY (enums.CodingMethod attribute)</a>
+      <li><a href="enums.html#enums.PopulationSize.VOC">VOC (enums.PopulationSize attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -380,7 +382,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Aleksandra Dabrowska, Jerzy Dabrowski, Kinga Talaga.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>

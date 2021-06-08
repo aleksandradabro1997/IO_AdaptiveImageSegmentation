@@ -52,18 +52,6 @@ def produce_ground_truth(dataset_path: str, size: Tuple) -> Dict:
     return gt
 
 
-def get_number_of_elements_from_xml(xml_path: str) -> int:
-
-    with open(xml_path, 'r') as xml:
-        content = xml.readlines()
-    nb_of_clusters = 0
-    for line in content:
-        if '<name>' in line:
-            nb_of_clusters += 1
-
-    return nb_of_clusters
-
-
 def read_all_images(path: str) -> Dict:
     """ Read all files from directory in.
 
